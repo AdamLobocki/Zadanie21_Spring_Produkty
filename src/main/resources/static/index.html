@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<hi>Produkty</hi>
+<br/>
+<a href="http://localhost:8080/lista?kategoria=wszystkie">Wyświetl wszystkie produkty</a><br/>
+<a href="http://localhost:8080/lista?kategoria=spozywcze">wyświetl produkty z kategorii art. spożywcze</a><br/>
+<a href="http://localhost:8080/lista?kategoria=gospodarstwa">wyświetl produkty z kategorii art. gosp. domowego</a><br/>
+<a href="http://localhost:8080/lista?kategoria=inne">wyświetl produkty z kategorii inne</a><br/>
+
+<form action="/lista" method="post">
+    <input type="text" name="nazwa" placeholder="Nazwa">
+    <input type="text" name="cena" placeholder="Cena">
+    <input type="text" name="kategoria" placeholder="Kategoria">
+    <input type="submit" value="Dodaj">
+</form>
+
+
+</body>
+</html>
