@@ -12,13 +12,20 @@ import java.util.List;
 
 @Controller
 public class ListOfProducts {
+    ProductList productList = new ProductList();
+
+    @GetMapping("/addStatic")
+    public String staticAdd(){
+        productList.addStatic();
+        return "redirect:/";
+    }
+
 
 
     @GetMapping("/lista")
     @ResponseBody
     public String list(@RequestParam(value = "kategoria") String category) {
-        ProductList productList = new ProductList();
-        productList.addStatic();
+
         List<Product> listProduct = productList.getAll();
 
 
@@ -81,10 +88,9 @@ public class ListOfProducts {
 
     @RequestMapping("/add")
     @ResponseBody
-    public String addProd(@RequestParam String nazwa, @RequestParam String cena, @RequestParam String kategoria) {
+    public String addProd(@RequestParam String nazwa, @RequestParam int cena, @RequestParam String kategoria) {
 
-        Product product = new Product(nazwa, Integer.valueOf(cena), kategoria);
-        ProductList productList = new ProductList();
+        Product product = new Product(nazwa, cena, kategoria);
         productList.addProduct(product);
         return "Dodano produkt: " + product.getName();
     }
