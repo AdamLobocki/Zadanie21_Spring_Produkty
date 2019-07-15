@@ -13,35 +13,14 @@ import java.util.List;
 @Controller
 public class ListOfProducts {
 
-    @RequestMapping("/lista")
-    @ResponseBody
-    List newList(){
-        List<Product> listProduct = new ArrayList<Product>();
-        Product product1 = new Product("pralka", 2000, "Art. gosp. domowego");
-        Product product2 = new Product("woda", 2, "Art. spożywcze");
-        Product product3 = new Product("masło", 6, "Art. spożywcze");
-        Product product4 = new Product("patelnia", 40, "Art. gosp. domowego");
-        Product product5 = new Product("mleko", 4, "Art. spożywcze");
-        Product product6 = new Product("czajnik", 2000, "Art. gosp. domowego");
-        Product product7 = new Product("pies", 2000, "Inne");
-        Product product8 = new Product("złota rybka", 2000, "Inne");
-        listProduct.add(product1);
-        listProduct.add(product2);
-        listProduct.add(product3);
-        listProduct.add(product4);
-        listProduct.add(product5);
-        listProduct.add(product6);
-        listProduct.add(product7);
-        listProduct.add(product8);
-        return listProduct;
-    }
-
 
     @GetMapping("/lista")
     @ResponseBody
     public String list(@RequestParam(value = "kategoria") String category) {
+        ProductList productList = new ProductList();
+        productList.addStatic();
+        List<Product> listProduct = productList.getAll();
 
-        List<Product> listProduct =  newList();
 
         List<Product> newProductList = new ArrayList<>();
         String result = "";
@@ -100,5 +79,14 @@ public class ListOfProducts {
         return result + "<br/>" + "Suma cen: " + priceSum;
     }
 
+    @RequestMapping("/add")
+    @ResponseBody
+    public String addProd(@RequestParam String nazwa, @RequestParam String cena, @RequestParam String kategoria) {
+
+        Product product = new Product(nazwa, Integer.valueOf(cena), kategoria);
+        ProductList productList = new ProductList();
+        productList.addProduct(product);
+        return "Dodano produkt: " + product.getName();
+    }
 
 }
