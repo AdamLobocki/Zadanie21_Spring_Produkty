@@ -15,20 +15,59 @@ public class ListOfProducts {
     ProductList productList = new ProductList();
 
     @GetMapping("/addStatic")
-    public String staticAdd(){
+    public String staticAdd() {
         productList.addStatic();
         return "redirect:/";
     }
 
 
-
     @GetMapping("/lista")
     @ResponseBody
     public String list(@RequestParam(value = "kategoria") String category) {
-
+        String result = "";
+        int sum = 0;
         List<Product> listProduct = productList.getAll();
+        List<Product> newProductList = new ArrayList<>();
+
+        for (Product product : listProduct) {
+            switch (category) {
+                case "spozywcze":
+                    if (product.getCategory().equals("Art. spożywcze"))
+                        newProductList.add(product);
+
+                    break;
+                case "gospodarstwa":
+                    if (product.getCategory().equals("Art. gosp. domowego"))
+                        newProductList.add(product);
+                    break;
+                case "inne":
+                    if (product.getCategory().equals("Inne"))
+                        newProductList.add(product);
+                    break;
+                case "wszystkie":
+                    newProductList.add(product);
+            }
+        }
+        for (Product product1 : newProductList) {
+            result += "Nazwa: " + product1.getName() + " cena: " + product1.getPrice() + " kategoria " + product1.getCategory() + "<br/>";
+            sum += product1.getPrice();
+        }
 
 
+        return result + " " + "suma " + sum;
+    }
+
+    @RequestMapping("/add")
+    @ResponseBody
+    public String addProd(@RequestParam String nazwa, @RequestParam int cena, @RequestParam String kategoria) {
+
+        Product product = new Product(nazwa, cena, kategoria);
+        productList.addProduct(product);
+        return "Dodano produkt: " + product.getName();
+    }
+}
+
+        /*
         List<Product> newProductList = new ArrayList<>();
         String result = "";
         int priceSum = 0;
@@ -86,13 +125,7 @@ public class ListOfProducts {
         return result + "<br/>" + "Suma cen: " + priceSum;
     }
 
-    @RequestMapping("/add")
-    @ResponseBody
-    public String addProd(@RequestParam String nazwa, @RequestParam int cena, @RequestParam String kategoria) {
 
-        Product product = new Product(nazwa, cena, kategoria);
-        productList.addProduct(product);
-        return "Dodano produkt: " + product.getName();
+
     }
-
-}
+*/
